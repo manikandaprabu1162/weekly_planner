@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/task_provider.dart';
 import '../models/task.dart';
+import 'package:intl/intl.dart';
 import 'day_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -61,8 +62,7 @@ class HomeScreen extends StatelessWidget {
                 final day = weekDays[index];
                 final tasks = provider.tasksForDate(day);
                 final completed = tasks.where((t) => t.isCompleted).length;
-                final formattedDate =
-                    "${day.day.toString().padLeft(2, '0')}/${day.month.toString().padLeft(2, '0')}/${day.year}";
+                final formattedDate = DateFormat('MMMM d').format(day);
                 return Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -79,7 +79,6 @@ class HomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(20),
                       child: Row(
                         children: [
-                          const SizedBox(width: 18),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,37 +105,60 @@ class HomeScreen extends StatelessWidget {
                                       formattedDate,
                                       style: TextStyle(
                                         color: Colors.grey[600],
-                                        fontSize: 14,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  '${tasks.length} tasks',
-                                  style: const TextStyle(fontSize: 15),
-                                ),
-                                const SizedBox(height: 8),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: LinearProgressIndicator(
-                                    minHeight: 8,
-                                    value: tasks.isEmpty
-                                        ? 0
-                                        : completed / tasks.length,
-                                    backgroundColor: Colors.grey[300],
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      const Color.fromARGB(255, 3, 52, 132),
+                                const SizedBox(height: 20),
+                                Container(
+                                  height: 6,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.grey[300],
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: TweenAnimationBuilder<double>(
+                                      tween: Tween<double>(
+                                        begin: 0,
+                                        end: tasks.isEmpty
+                                            ? 0
+                                            : completed / tasks.length,
+                                      ),
+                                      duration: const Duration(
+                                        milliseconds: 500,
+                                      ),
+                                      builder: (context, value, _) =>
+                                          LinearProgressIndicator(
+                                            value: value,
+                                            backgroundColor: Colors.transparent,
+                                            valueColor: AlwaysStoppedAnimation(
+                                              const Color.fromARGB(
+                                                255,
+                                                3,
+                                                52,
+                                                132,
+                                              ),
+                                            ),
+                                          ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.deepPurple,
-                            size: 20,
+                          const SizedBox(height: 1),
+                          Text(
+                            '${tasks.length} tasks',
+                            style: const TextStyle(fontSize: 12),
                           ),
                         ],
                       ),
