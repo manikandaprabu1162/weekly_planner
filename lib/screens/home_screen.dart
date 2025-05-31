@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   List<DateTime> getCurrentWeekDays() {
     final now = DateTime.now();
     final monday = now.subtract(Duration(days: now.weekday - 1));
-    return List.generate(5, (i) => monday.add(Duration(days: i)));
+    return List.generate(7, (i) => monday.add(Duration(days: i)));
   }
 
   @override
@@ -18,15 +18,36 @@ class HomeScreen extends StatelessWidget {
     final weekDays = getCurrentWeekDays();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Weekly Planner'),
-        centerTitle: true,
-        backgroundColor: Colors.deepPurple,
-        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Weekly Planner',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+        ),
+        centerTitle: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.black87),
+            onPressed: () {
+              // Handle settings button press
+            },
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
       ),
+
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFe0c3fc), Color(0xFF8ec5fc)],
+            colors: [
+              Color.fromARGB(255, 255, 255, 255),
+              Color.fromARGB(255, 255, 255, 255),
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -58,18 +79,6 @@ class HomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(20),
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 28,
-                            backgroundColor: Colors.deepPurple.shade100,
-                            child: Text(
-                              ['M', 'T', 'W', 'T', 'F'][index],
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Colors.deepPurple,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
                           const SizedBox(width: 18),
                           Expanded(
                             child: Column(
@@ -84,6 +93,8 @@ class HomeScreen extends StatelessWidget {
                                         'Wednesday',
                                         'Thursday',
                                         'Friday',
+                                        'Saturday',
+                                        'Sunday',
                                       ][index],
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -115,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                                         : completed / tasks.length,
                                     backgroundColor: Colors.grey[300],
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.deepPurple,
+                                      const Color.fromARGB(255, 3, 52, 132),
                                     ),
                                   ),
                                 ),
