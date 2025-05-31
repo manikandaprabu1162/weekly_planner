@@ -18,7 +18,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendar'),
+        title: const Text('Calendartracker'),
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
         elevation: 0,
